@@ -97,6 +97,15 @@ class PluginWifiConnectPlugin() : FlutterPlugin, MethodCallHandler {
         ssid?.let {
           when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+              val config = createWifiConfig(it)
+              val ssidPrefix = it
+              wifiManager.startScan();
+              val ssid = getNearbySsid(ssidPrefix)
+              if (ssid == null) {
+                result.success(false)
+                return
+              }
+
               val specifier = WifiNetworkSpecifier.Builder()
                       .setSsidPattern(PatternMatcher(it, PATTERN_PREFIX))
                       .build()
