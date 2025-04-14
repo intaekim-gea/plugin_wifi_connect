@@ -212,7 +212,10 @@ class PluginWifiConnectPlugin() : FlutterPlugin, MethodCallHandler {
             }, result)
           }
           else -> {
-            result.success(false)
+            try {
+              result.success(false)
+            } catch (e: IllegalStateException) {
+            }
           }
         }
         context?.unregisterReceiver(this)
